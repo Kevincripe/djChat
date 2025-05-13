@@ -1,0 +1,31 @@
+# General ignores
+*.pyc
+*~
+__pycache__/
+.DS_Store
+*.sqlite3
+*.log
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# Django specific ignores
+local_settings.py
+db.sqlite3
+media/
+
+# React specific ignores
+node_modules/
+build/
+package-lock.json
+
+# VS Code
+.vscode/
+
+# OS or Editor Folders
+.idea/
+*.swp
+*.swo
