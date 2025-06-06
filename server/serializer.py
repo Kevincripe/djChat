@@ -9,11 +9,17 @@ class ChannelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ServerSerializer(serializers.ModelSerializer):
+    num_members = serializers.SerializerMethodField()
     channel_server = ChannelSerializer(many=True)
 
     class Meta:
         model = Server
-        fields = "__all__"
+        exclude = ("member", )
+
+    def get_num_members(self, obj):
+        if hasattr(obj, "num_members"):
+            return obj.num_members
+        return None
 
 class CategorySerializer(serializers.ModelSerializer):
 
