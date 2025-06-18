@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from .serializer import ServerSerializer
 from rest_framework.response import Response
 from django.db.models import Count
+from .schema import server_list_docs
 from .models import Server
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 
@@ -10,6 +11,7 @@ from rest_framework.exceptions import AuthenticationFailed, ValidationError
 class ServerListViewSet(viewsets.ViewSet):
     queryset = Server.objects.all()
 
+    @server_list_docs
     def list(self, request):
         category = request.query_params.get("category")
         by_user = request.query_params.get("by_user") == "true"
@@ -42,6 +44,6 @@ class ServerListViewSet(viewsets.ViewSet):
             except ValueError:
                 raise ValidationError(detail=f"Server Value Error")
 
-        serializer = ServerSerializer(self.queryset, many=True)
+        serializer = ServerSerializer(self.queryset, many=True, context={"num_members": with_num_members})
         
         return Response(serializer.data)

@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from .models import Server, Category, Channel
+
+from .models import Channel, Server
 
 
 class ChannelSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Channel
         fields = "__all__"
+
 
 class ServerSerializer(serializers.ModelSerializer):
     num_members = serializers.SerializerMethodField()
@@ -14,15 +15,16 @@ class ServerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Server
-        exclude = ("member", )
+        exclude = ("member",)
 
     def get_num_members(self, obj):
         if hasattr(obj, "num_members"):
             return obj.num_members
         return None
 
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = "__all__"
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        num_members = self.context.get("num_members")
+        if not num_members:
+            data.pop("num_members", None)
+        return data
