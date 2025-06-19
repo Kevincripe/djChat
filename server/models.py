@@ -69,7 +69,6 @@ class Channel(models.Model):
         validators=[validate_icon_image_size, validate_image_file_exstension],
     )
 
-
     def save(self, *args, **kwargs):
         if self.id:
             existing = get_object_or_404(Category, id=self.id)
@@ -89,4 +88,3 @@ class Channel(models.Model):
 
     def __str__(self):
         return self.name
-    
